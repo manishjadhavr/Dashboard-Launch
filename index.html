@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Study Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { background-color: #f8f9fa; font-family: 'Inter', sans-serif; }
+        .card { border: none; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .metric-card { background: #fff; padding: 20px; text-align: center; }
+        .metric-value { font-size: 24px; font-weight: bold; color: #0d6efd; }
+        .table-container { background: white; border-radius: 12px; padding: 20px; overflow-x: auto; }
+        th { background-color: #f1f3f5 !important; }
+    </style>
+</head>
+<body>
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>💳 Credit Card Study Dashboard</h1>
+        <span class="badge bg-primary fs-6">Currency: INR (₹)</span>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card metric-card">
+                <div class="text-muted">Total Spend (Study Period)</div>
+                <div class="metric-value">₹5,61,888.79</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card metric-card">
+                <div class="text-muted">Peak Month (Nov 2025)</div>
+                <div class="metric-value">₹92,561.72</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card metric-card">
+                <div class="text-muted">Total Categories</div>
+                <div class="metric-value">11</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card p-4">
+                <h5>Monthly Expense Trend</h5>
+                <canvas id="lineChart"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card p-4">
+                <h5>Category Mix</h5>
+                <canvas id="pieChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-container mt-4">
+        <h5 class="mb-3">Month-by-Month Expense Table</h5>
+        <table class="table table-hover border">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Nov '25</th>
+                    <th>Dec '25</th>
+                    <th>Jan '26</th>
+                    <th>Feb '26</th>
+                    <th>Mar '26</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Shopping</td><td>₹64,716</td><td>₹0</td><td>₹0</td><td>₹0</td><td>₹0</td></tr>
+                <tr><td>Bills & Utilities</td><td>₹0</td><td>₹0</td><td>₹0</td><td>₹0</td><td>₹32,500</td></tr>
+                <tr><td>Financial/EMI</td><td>₹11,112</td><td>₹10,854</td><td>₹10,854</td><td>₹10,854</td><td>₹10,854</td></tr>
+                <tr><td>Dining & Food</td><td>₹0</td><td>₹3,096</td><td>₹7,031</td><td>₹0</td><td>₹1,042</td></tr>
+                <tr><td class="fw-bold">Total</td><td class="fw-bold">₹92,561</td><td class="fw-bold">₹29,515</td><td class="fw-bold">₹19,832</td><td class="fw-bold">₹54,622</td><td class="fw-bold">₹68,958</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // 1. Line Chart Data (Monthly Trend)
+    const ctxLine = document.getElementById('lineChart').getContext('2d');
+    new Chart(ctxLine, {
+        type: 'line',
+        data: {
+            labels: ['Sep 25', 'Oct 25', 'Nov 25', 'Dec 25', 'Jan 26', 'Feb 26', 'Mar 26'],
+            datasets: [{
+                label: 'Expenses (₹)',
+                data: [40557, 58943, 92561, 29515, 19832, 54622, 68958],
+                borderColor: '#0d6efd',
+                tension: 0.3,
+                fill: true,
+                backgroundColor: 'rgba(13, 110, 253, 0.05)'
+            }]
+        },
+        options: {
+            plugins: { tooltip: { enabled: true, mode: 'index', intersect: false } },
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+
+    // 2. Pie Chart Data (Category Split)
+    const ctxPie = document.getElementById('pieChart').getContext('2d');
+    new Chart(ctxPie, {
+        type: 'doughnut',
+        data: {
+            labels: ['Shopping', 'Utilities', 'EMI', 'Travel', 'Food', 'Others'],
+            datasets: [{
+                data: [161736, 81355, 62734, 53215, 49535, 64361],
+                backgroundColor: ['#0d6efd', '#6610f2', '#6f42c1', '#d63384', '#fd7e14', '#adb5bd']
+            }]
+        },
+        options: {
+            plugins: { legend: { position: 'bottom' } }
+        }
+    });
+</script>
+
+</body>
+</html>
